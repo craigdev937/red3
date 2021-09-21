@@ -1,14 +1,11 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+import { BeforeInsert, Column, Entity, Index, 
+    JoinColumn, ManyToOne } from "typeorm";
+import { makeId } from "../global/helpers";
 import { Users } from "./Users";
 import { AbEntity } from "./AbEntity";
 
 @Entity({name: "posts"})
 export class Posts extends AbEntity {
-    constructor(posts: Partial<Posts>) {
-        super();
-        Object.assign(this, posts);
-    };
-
     @Index()
     @Column() identifier: string;  // 7 Character ID.
     @Column() title: string;
@@ -20,6 +17,10 @@ export class Posts extends AbEntity {
         name: "username", 
         referencedColumnName: "username"
     }) user: Users;
+    @BeforeInsert()
+    makeIdAndSlug() {
+        this.identifier = makeId(7);
+    };
 };
 
 

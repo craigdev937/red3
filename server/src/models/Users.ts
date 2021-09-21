@@ -20,12 +20,12 @@ export class Users extends AbEntity {
     @Length(6, 50)
     @Column() password: string;
 
-    @OneToMany(() => Posts, post => post.user) posts: Posts[];
-
     @BeforeInsert()
     async hashPassword(): Promise<void> {
         this.password = await bcrypt.hash(this.password, 10);
     };
+
+    @OneToMany(() => Posts, post => post.user) posts: Posts[];
 };
 
 
