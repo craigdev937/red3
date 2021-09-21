@@ -6,6 +6,7 @@ import logger from "morgan";
 import cookieParser from "cookie-parser";
 import { trim } from "./middleware/trim";
 import { userRt } from "./routes/userRt";
+import { postRt } from "./routes/postRt";
 import { createConnection } from "typeorm";
 
 (async () => {
@@ -36,6 +37,7 @@ import { createConnection } from "typeorm";
 
     // Routes and Port
     app.use("/api/user", userRt);
+    app.use("/api/post", postRt);
     const port = process.env.PORT || 9000;
     app.listen(port, () => {
         console.log(`Server: http://localhost:${port}`);

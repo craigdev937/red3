@@ -2,7 +2,9 @@ import bcrypt from "bcrypt";
 import { IsEmail, Length } from "class-validator";
 import { Exclude } from "class-transformer"
 import { AbEntity } from "./AbEntity";
-import { BeforeInsert, Column, Entity, Index } from "typeorm";
+import { Posts } from "./Posts";
+import { BeforeInsert, Column, Entity, 
+    Index, OneToMany,  } from "typeorm";
 
 @Entity({name: "users"})
 export class Users extends AbEntity {
@@ -11,12 +13,14 @@ export class Users extends AbEntity {
     @Column({ unique: true }) email: string;
 
     @Index()
-    @Length(3, 255, { message: "Must be at least 3" })
+    @Length(4, 50, { message: "Min four characters" })
     @Column({ unique: true }) username: string;
 
     @Exclude()
-    @Length(6, 255)
+    @Length(6, 50)
     @Column() password: string;
+
+    @OneToMany(() => Posts, post => post.user) posts: Posts[];
 
     @BeforeInsert()
     async hashPassword(): Promise<void> {
